@@ -57,6 +57,7 @@ cover/
 
 # Django stuff:
 *.log
+*.swp
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
@@ -67,6 +68,10 @@ instance/
 
 # Scrapy stuff:
 .scrapy
+
+# Static files
+/staticfiles/
+/media/
 
 # Sphinx documentation
 docs/_build/
@@ -110,6 +115,12 @@ celerybeat.pid
 
 # SageMath parsed files
 *.sage.py
+
+# Local development settings
+*.env
+*.pyc
+*.sqlite3
+*.db
 
 # Environments
 .env
