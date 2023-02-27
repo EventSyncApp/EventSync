@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\Maeghan\Documents\Event_Ticketing_App_RZM\Event_Ticketing_App_RZM\myenv"
+VIRTUAL_ENV="C:\Users\Zach\Documents\GitHub\Event_Ticketing_App_RZM\myenv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

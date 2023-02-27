@@ -23,3 +23,5 @@ class Spectators(models.Model):
 
     def __str__(self):
         return self.spectator_fname + " " + self.spectator_lname
+    
+#zach comment test
