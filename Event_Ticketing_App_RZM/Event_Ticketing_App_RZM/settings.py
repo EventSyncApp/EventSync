@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Event_Ticketing',
+    # needed for REST API features
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
