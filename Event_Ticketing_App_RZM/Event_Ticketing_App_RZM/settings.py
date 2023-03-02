@@ -37,9 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # application created
     'Event_Ticketing',
     # needed for REST API features
     'rest_framework',
+    # to have country field in Models
+    'django_countries',
+    # to use widgets
+    'django.forms',
 ]
 
 MIDDLEWARE = [
