@@ -6,6 +6,11 @@ from rest_framework import viewsets
 from .models import Meets
 from .models import Spectators
 from .serializers import HomeSerializer
+from .serializers import SpectatorSerializer
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
 
 # Create your views here.
 
@@ -14,20 +19,11 @@ class HomeViewSet(viewsets.ModelViewSet):
     queryset = Meets.objects.all()
     serializer_class = HomeSerializer
 
-@csrf_exempt
-def add_spectator(request):
-    if request.method == 'POST':
-        spectator_fname = request.POST.get('spectator_fname')
-        spectator_lname = request.POST.get('spectator_lname')
-        spectator_email = request.POST.get('spectator_email')
-        spectator_country = request.POST.get('spectator_country')
-        spectator_state = request.POST.get('spectator_state')
-        purchase_time = request.POST.get('purchase_time')
-        ticket_cost = request.POST.get('ticket_cost')
-        seat_num = request.POST.get('seat_num')
-        spectator = Spectators(spectator_fname=spectator_fname, spectator_lname=spectator_lname, spectator_email=spectator_email, spectator_country=spectator_country, 
-                               spectator_state=spectator_state, purchase_time=purchase_time, ticket_cost=ticket_cost, seat_num=seat_num)
-        spectator.save()
-        return JsonResponse({'status': 'ok'})
-    else:
-        return JsonResponse({'status': 'error'})
+class CreateSpectatorView(APIView):
+    def post(self, request):
+        serializer = SpectatorSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
