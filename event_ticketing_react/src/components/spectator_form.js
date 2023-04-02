@@ -9,13 +9,28 @@ function SpectatorForm() {
     const [spectator_email, setEmail] = useState('');
     const [spectator_country, setCountry] = useState('');
     const [spectator_state, setState] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
 
     const handleSubmit = (event) => {
         event.preventDefault();
         axios.post('/add_spectator/', { spectator_fname, spectator_lname, spectator_email, spectator_country, spectator_state })
-            .then(response => console.log(response.data))
+            .then((response) => { 
+                setSuccessMessage('Form submitted successfully!');
+                //sendConfirmationEmail();
+                console.log(response.data);
+            })
             .catch(error => console.log(error));
     };
+
+//    const sendConfirmationEmail = () => {
+//        axios.post('/send_confirmation_email/', { spectator_fname, spectator_lname, spectator_email, spectator_country, spectator_state })
+//            .then((response) => {
+//                console.log(response);
+//            })
+//            .catch((error) => {
+//                console.error(error);
+//            });
+//    };
 
     function handleCountryChange(event) {
         setCountry(event.target.value);
@@ -43,6 +58,7 @@ function SpectatorForm() {
             <StateDropdown name="state" value={spectator_state} onChange={handleStateChange} />
             <br />
             <button type="submit">Submit</button>
+            {successMessage && <p>{successMessage}</p>}
         </form>
     );
 }

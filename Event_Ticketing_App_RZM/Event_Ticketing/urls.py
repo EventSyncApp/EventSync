@@ -16,6 +16,7 @@ app_name = 'events'
 urlpatterns = [
     # future views added later
     path('add_spectator/', CreateSpectatorView.as_view(), name='add_spectator'),
+
 ]
 
 urlpatterns += router.urls
