@@ -13,7 +13,11 @@ from rest_framework import status
 # import for sendgrid
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
-
+# import for stripe
+from django.http import HttpResponse
+from django.http import HttpResponseForbidden
+import stripe
+import json
 
 import mysql.connector
 
@@ -46,6 +50,32 @@ class HomeViewSet(viewsets.ModelViewSet):
     queryset = Meets.objects.all()
     serializer_class = HomeSerializer
 
+# This is your test secret API key.
+stripe.api_key = "sk_test_51MvjSdLxodRxB3c1zq9m4ffnJUuRD9MJzTdYkMwgFXOZxikY8Za1ZV7MZkVxNDdNYqqGkhPyEh8b2STWwAa4FRAQ00w3w1E765"
+
+# Stripe payment intent view
+@csrf_exempt
+def create_payment_intent(request):
+    if request.method == 'POST':
+        try:
+            amount = 6000
+            currency = 'usd'
+
+            intent = stripe.PaymentIntent.create(
+                amount=amount,
+                currency=currency,
+                automatic_payment_methods={
+                    'enabled': True,
+                },
+            )
+
+            return HttpResponse(
+                json.dumps({'clientSecret': intent['client_secret']}),
+                content_type='application/json'
+            )
+        except Exception as e:
+            return HttpResponseForbidden()
+
 class CreateSpectatorView(APIView):
     def post(self, request):
         serializer = SpectatorSerializer(data=request.data)
@@ -54,13 +84,13 @@ class CreateSpectatorView(APIView):
 
             # Email portion of the view
             spectator_email = serializer.validated_data['spectator_email']
-            spectator_fname = serializer.validated_data['spectator_fname']
+            ticket_cost = serializer.validated_data['ticket_cost']
             # create email message
             message = Mail(
                 from_email='eventticketingapprzm@gmail.com',
                 to_emails=spectator_email,
                 subject='Form Submission Confirmation',
-                html_content='<p>Thank you for submitting the form!</p>')
+                html_content=f'<p>Thank you for submitting the form!</p><br /><p>ticket cost: ${ticket_cost}</p>')
 
             # send email using SendGrid API
             try:
