@@ -11,4 +11,4 @@ class HomeSerializer(serializers.ModelSerializer):
 class SpectatorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Spectators
-        fields = ('spectator_fname', 'spectator_lname', 'spectator_email', 'spectator_country', 'spectator_state')
+        fields = ('spectator_fname', 'spectator_lname', 'spectator_email', 'spectator_state', 'ticket_cost')

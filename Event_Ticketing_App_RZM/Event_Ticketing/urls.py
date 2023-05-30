@@ -2,6 +2,7 @@ from django.urls import path, include
 from rest_framework import routers
 from .views import HomeViewSet
 from .views import CreateSpectatorView
+from .views import create_payment_intent
 from . import views
 
 # register viewset as restful endpoints
@@ -16,7 +17,7 @@ app_name = 'events'
 urlpatterns = [
     # future views added later
     path('add_spectator/', CreateSpectatorView.as_view(), name='add_spectator'),
-
+    path('create-payment-intent/', create_payment_intent, name='create_payment_intent'),
 ]
 
 urlpatterns += router.urls
