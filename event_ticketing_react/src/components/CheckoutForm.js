@@ -4,6 +4,7 @@ import {
   useStripe,
   useElements
 } from "@stripe/react-stripe-js";
+import axios from 'axios';
 
 export default function CheckoutForm() {
   const [succeeded, setSucceeded] = useState(false);
@@ -13,6 +14,35 @@ export default function CheckoutForm() {
   const [clientSecret, setClientSecret] = useState('');
   const stripe = useStripe();
   const elements = useElements();
+  const currentDate = new Date();
+  const hours = currentDate.getHours();
+  const minutes = currentDate.getMinutes();
+  const seconds = currentDate.getSeconds();
+  const milliseconds = currentDate.getMilliseconds();
+
+  //testing function
+  /* useEffect(() => {
+    console.log('Component mounted or updated');
+
+    return () => {
+      console.log('Component unmounted');
+    };
+  }); */
+
+  useEffect(() => {
+    const fetchClientSecret = async () => {
+      try {
+        const response = await axios.post('/create-payment-intent/');
+        //console.log(`Current Time: ${hours}:${minutes}:${seconds}.${milliseconds}`); testing line
+        const { clientSecret } = response.data;
+        setClientSecret(clientSecret);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchClientSecret();
+  }, []);
 
   const cardStyle = {
     style: {

@@ -10,8 +10,6 @@ const stripePromise = loadStripe('pk_test_51MvjSdLxodRxB3c1pv7Un3MQGhAjv4m2vP1Z9
 const ticket_cost = 60.00;
 
 function SpectatorForm() {
-    const [clientSecret, setClientSecret] = useState("");
-
     const [spectator_fname, setFname] = useState('');
     const [spectator_lname, setLname] = useState('');
     const [spectator_email, setEmail] = useState('');
