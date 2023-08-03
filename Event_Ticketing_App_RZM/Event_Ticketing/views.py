@@ -19,8 +19,6 @@ from django.http import HttpResponseForbidden
 import stripe
 import json
 
-import mysql.connector
-
 #def send_email(request, id):
 #    # Connect to the MySQL database
 #    mydb = mysql.connector.connect(
@@ -50,31 +48,26 @@ class HomeViewSet(viewsets.ModelViewSet):
     queryset = Meets.objects.all()
     serializer_class = HomeSerializer
 
-# This is your test secret API key.
-stripe.api_key = "sk_test_51MvjSdLxodRxB3c1zq9m4ffnJUuRD9MJzTdYkMwgFXOZxikY8Za1ZV7MZkVxNDdNYqqGkhPyEh8b2STWwAa4FRAQ00w3w1E765"
 
 # Stripe payment intent view
 @csrf_exempt
 def create_payment_intent(request):
-    if request.method == 'POST':
-        try:
-            amount = 6000
-            currency = 'usd'
+    # This is your test secret API key.
+    stripe.api_key = "sk_test_51MvjSdLxodRxB3c1zq9m4ffnJUuRD9MJzTdYkMwgFXOZxikY8Za1ZV7MZkVxNDdNYqqGkhPyEh8b2STWwAa4FRAQ00w3w1E765"
+    amount = 6000
+    currency = 'usd'
 
-            intent = stripe.PaymentIntent.create(
-                amount=amount,
-                currency=currency,
-                automatic_payment_methods={
-                    'enabled': True,
-                },
-            )
+    try:
+        intent = stripe.PaymentIntent.create(
+            amount=amount,
+            currency=currency,
+            payment_method_types=['card'],
+        )
 
-            return HttpResponse(
-                json.dumps({'clientSecret': intent['client_secret']}),
-                content_type='application/json'
-            )
-        except Exception as e:
-            return HttpResponseForbidden()
+        return JsonResponse({'clientSecret': intent.client_secret})
+    except Exception as e:
+        return JsonResponse({'error': str(e)})
+        
 
 class CreateSpectatorView(APIView):
     def post(self, request):

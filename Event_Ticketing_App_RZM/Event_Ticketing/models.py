@@ -2,6 +2,10 @@ from django.db import models
 from datetime import datetime
 from django.utils import timezone
 
+#function for getting purchase time
+def get_current_time():
+    return timezone.now()
+
 # Create your models here.
 class Meets(models.Model):
     # Meet ID is generated automatically
@@ -19,7 +23,7 @@ class Spectators(models.Model):
     spectator_lname = models.CharField(max_length=75)
     spectator_email = models.EmailField(max_length=100, default='example@example.com')
     spectator_state = models.CharField(max_length=2, default="MD")
-    purchase_time = models.DateTimeField(default=timezone.make_aware(datetime.now(), timezone.get_current_timezone()))
+    purchase_time = models.DateTimeField(default=get_current_time)
     ticket_cost = models.DecimalField(max_digits=10, decimal_places=2, default=30.00)
     # seat_num = models.CharField(max_length=10)
     # seatType look into how to set it up
