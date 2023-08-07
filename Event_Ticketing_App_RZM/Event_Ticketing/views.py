@@ -57,12 +57,26 @@ def create_payment_intent(request):
     amount = 6000
     currency = 'usd'
 
+    # Check if there's a PaymentIntent associated with the user's session or client ID
+    # client_secret = request.session.get('payment_intent_client_secret')
+
+    # if client_secret:
+        # If a PaymentIntent exists in the session, return it
+        # return JsonResponse({'clientSecret': client_secret})
+
+    # If no existing PaymentIntent in the session, create a new one
     try:
         intent = stripe.PaymentIntent.create(
             amount=amount,
             currency=currency,
             payment_method_types=['card'],
         )
+
+        # Save the new PaymentIntent in the session
+        # request.session['payment_intent_client_secret'] = intent.client_secret
+
+        # Debug: Print the session data to the server logs
+        # print(request.session.items())
 
         return JsonResponse({'clientSecret': intent.client_secret})
     except Exception as e:

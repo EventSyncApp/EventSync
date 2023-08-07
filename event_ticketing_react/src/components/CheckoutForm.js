@@ -5,8 +5,10 @@ import {
   useElements
 } from "@stripe/react-stripe-js";
 import axios from 'axios';
+import StateDropdown from './state_dd.js';
 
 export default function CheckoutForm() {
+  //stripe variables
   const [succeeded, setSucceeded] = useState(false);
   const [error, setError] = useState(null);
   const [processing, setProcessing] = useState('');
@@ -14,11 +16,19 @@ export default function CheckoutForm() {
   const [clientSecret, setClientSecret] = useState('');
   const stripe = useStripe();
   const elements = useElements();
-  const currentDate = new Date();
-  const hours = currentDate.getHours();
+  //spectator variables
+  const [spectator_fname, setFname] = useState('');
+  const [spectator_lname, setLname] = useState('');
+  const [spectator_email, setEmail] = useState('');
+  const [spectator_state, setState] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const ticket_cost = 60.00; //change latrer to dynamic
+
+  // Testing variables
+  /* const hours = currentDate.getHours();
   const minutes = currentDate.getMinutes();
   const seconds = currentDate.getSeconds();
-  const milliseconds = currentDate.getMilliseconds();
+  const milliseconds = currentDate.getMilliseconds(); */
 
   //testing function
   /* useEffect(() => {
@@ -70,9 +80,21 @@ export default function CheckoutForm() {
     setError(event.error ? event.error.message : "");
   };
 
+  function handleStateChange(event) {
+    setState(event.target.value);
+  }
+
   const handleSubmit = async ev => {
     ev.preventDefault();
     setProcessing(true);
+
+    axios.post('/add_spectator/', { spectator_fname, spectator_lname, spectator_email, spectator_state, ticket_cost })
+    .then((response) => { 
+        setSuccessMessage('Form submitted successfully!');
+        //sendConfirmationEmail();
+        console.log(response.data);
+    })
+    .catch(error => console.log(error));
 
     const payload = await stripe.confirmCardPayment(clientSecret, {
       payment_method: {
@@ -92,7 +114,24 @@ export default function CheckoutForm() {
 
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
+      {/* speactator fields */}
+      <label>First Name:</label>
+      <input type="text" value={spectator_fname} onChange={(event) => setFname(event.target.value)} />
+      <br />
+      <label>Last Name:</label>
+      <input type="text" value={spectator_lname} onChange={(event) => setLname(event.target.value)} />
+      <br />
+      <label>Email:</label>
+      <input type="email" value={spectator_email} onChange={(event) => setEmail(event.target.value)} />
+      <br />
+      <label>State:</label>
+      <StateDropdown name="state" value={spectator_state} onChange={handleStateChange} />
+      <br />
+
+      {/* stripe payment */}
       <CardElement id="card-element" options={cardStyle} onChange={handleChange} />
+
+      {/* button that submits both spectator info and stripe payment */}
       <button
         disabled={processing || disabled || succeeded}
         id="submit"
@@ -101,7 +140,7 @@ export default function CheckoutForm() {
           {processing ? (
             <div className="spinner" id="spinner"></div>
           ) : (
-            "Pay now"
+            "Checkout"
           )}
         </span>
       </button>
@@ -113,13 +152,8 @@ export default function CheckoutForm() {
       )}
       {/* Show a success message upon completion */}
       <p className={succeeded ? "result-message" : "result-message hidden"}>
-        Payment succeeded, see the result in your
-        <a
-          href={`https://dashboard.stripe.com/test/payments`}
-        >
-          {" "}
-          Stripe dashboard.
-        </a> Refresh the page to pay again.
+        Payment succeeded {"\n"}
+        Email Confirmation sent to { spectator_email }
       </p>
     </form>
   );

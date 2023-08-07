@@ -77,6 +77,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Event_Ticketing_App_RZM.wsgi.application'
 
+# Set the session cookie age to 1 hour (3600 seconds)
+SESSION_COOKIE_AGE = 3600
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
