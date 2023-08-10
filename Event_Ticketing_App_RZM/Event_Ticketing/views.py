@@ -83,6 +83,14 @@ def create_payment_intent(request):
         return JsonResponse({'error': str(e)})
         
 
+class SubmitMeetForm(APIView):
+    def post(self, request):
+        serializer = HomeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class CreateSpectatorView(APIView):
     def post(self, request):
         serializer = SpectatorSerializer(data=request.data)

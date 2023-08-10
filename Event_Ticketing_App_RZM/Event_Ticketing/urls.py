@@ -3,6 +3,7 @@ from rest_framework import routers
 from .views import HomeViewSet
 from .views import CreateSpectatorView
 from .views import create_payment_intent
+from .views import SubmitMeetForm
 from . import views
 
 # register viewset as restful endpoints
@@ -18,6 +19,7 @@ urlpatterns = [
     # future views added later
     path('add_spectator/', CreateSpectatorView.as_view(), name='add_spectator'),
     path('create-payment-intent/', create_payment_intent, name='create_payment_intent'),
+    path('add_meet/', SubmitMeetForm.as_view(), name='add_meet'),
 ]
 
 urlpatterns += router.urls
