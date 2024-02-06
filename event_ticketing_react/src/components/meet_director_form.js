@@ -16,10 +16,6 @@ export default function MeetForm() {
     const [max_capacity, setCapacity] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
 
-    function handleStateChange(event) {
-        setState(event.target.value);
-    }
-
     const handleSubmit = (event) => {
         event.preventDefault();
         axios.post('/add_meet/', { meet_name, meet_date, meet_time_start, meet_location_venue, meet_location_address, meet_location_city, meet_location_state, meet_location_zipcode, meet_about_text, max_capacity })
@@ -29,6 +25,17 @@ export default function MeetForm() {
                 console.log(response.data);
             })
             .catch(error => console.log(error));
+        setMeetname('');
+        setMeetdate('');
+        setTime('');
+        setVenue('');
+        setAddress('');
+        setCity('');
+        setState('');
+        setZip('');
+        setAbout('');
+        setCapacity('');
+        setSuccessMessage('');
     };
 
     return (
@@ -38,10 +45,10 @@ export default function MeetForm() {
             <input type="text" value={meet_name} onChange={(event) => setMeetname(event.target.value)} />
             <br />
             <label>Meet Date:</label>
-            <input type="text" value={meet_date} onChange={(event) => setMeetdate(event.target.value)} />
+            <input type="date" value={meet_date} onChange={(event) => setMeetdate(event.target.value)} />
             <br />
             <label>Start Time of the Powerlifting Meet:</label>
-            <input type="text" value={meet_time_start} onChange={(event) => setTime(event.target.value)} />
+            <input type="time" value={meet_time_start} onChange={(event) => setTime(event.target.value)} />
             <br />
             <label>Venue Name:</label>
             <input type="text" value={meet_location_venue} onChange={(event) => setVenue(event.target.value)} />
@@ -53,7 +60,7 @@ export default function MeetForm() {
             <input type="text" value={meet_location_city} onChange={(event) => setCity(event.target.value)} />
             <br />
             <label>Venue State:</label>
-            <StateDropdown name="state" value={meet_location_state} onChange={handleStateChange} />
+            <StateDropdown name="state" value={meet_location_state} onChange={(event) => setState(event.target.value)} />
             <br />
             <label>Venue Zipcode:</label>
             <input type="text" value={meet_location_zipcode} onChange={(event) => setZip(event.target.value)} />

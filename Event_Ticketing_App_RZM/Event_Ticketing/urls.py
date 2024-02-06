@@ -8,7 +8,7 @@ from . import views
 
 # register viewset as restful endpoints
 router = routers.DefaultRouter()
-router.register(r'', HomeViewSet)
+router.register(r'', HomeViewSet, basename='')
 # router.register(r'add-spectator', CreateSpectatorView)
 
 # app name for main project urls.py file

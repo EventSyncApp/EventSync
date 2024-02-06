@@ -14,10 +14,7 @@ from rest_framework import status
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 # import for stripe
-from django.http import HttpResponse
-from django.http import HttpResponseForbidden
 import stripe
-import json
 
 #def send_email(request, id):
 #    # Connect to the MySQL database
@@ -45,8 +42,10 @@ import json
 
 # REST API class for handling http requests
 class HomeViewSet(viewsets.ModelViewSet):
-    queryset = Meets.objects.all()
-    serializer_class = HomeSerializer
+    def get(self, request):
+        items = Meets.objects.all()
+        serializer = HomeSerializer(items, many=True)
+        return Response(serializer.data)
 
 
 # Stripe payment intent view
