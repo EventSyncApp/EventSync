@@ -106,6 +106,7 @@ export default function CheckoutForm() {
       setError(`Payment failed ${payload.error.message}`);
       setProcessing(false);
     } else {
+      
       setError(null);
       setProcessing(false);
       setSucceeded(true);
