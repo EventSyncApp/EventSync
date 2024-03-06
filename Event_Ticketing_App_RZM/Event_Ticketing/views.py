@@ -42,11 +42,13 @@ import stripe
 
 # REST API class for handling http requests
 class HomeViewSet(viewsets.ModelViewSet):
-    def get(self, request):
-        items = Meets.objects.all()
-        serializer = HomeSerializer(items, many=True)
-        return Response(serializer.data)
+    queryset = Meets.objects.all()
+    serializer_class = HomeSerializer
 
+def get(self, request):
+    items = Meets.objects.all()
+    serializer = HomeSerializer(items, many=True)
+    return Response(serializer.data)
 
 # Stripe payment intent view
 @csrf_exempt
