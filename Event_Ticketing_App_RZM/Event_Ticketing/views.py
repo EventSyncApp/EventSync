@@ -36,19 +36,7 @@ import stripe
 #    # Call the send_mail function with the retrieved email address
 #    send_mail(email)
 
-
-
 # Create your views here.
-
-# REST API class for handling http requests
-class HomeViewSet(viewsets.ModelViewSet):
-    queryset = Meets.objects.all()
-    serializer_class = HomeSerializer
-
-def get(self, request):
-    items = Meets.objects.all()
-    serializer = HomeSerializer(items, many=True)
-    return Response(serializer.data)
 
 # Stripe payment intent view
 @csrf_exempt
@@ -91,6 +79,12 @@ class SubmitMeetForm(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class HomeViewSet(APIView):
+    def get(self, request):
+        queryset = Meets.objects.all()
+        serializer = HomeSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class CreateSpectatorView(APIView):
     def post(self, request):
