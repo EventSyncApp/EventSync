@@ -44,7 +44,7 @@ class Spectators(models.Model):
     spectator_state = models.CharField(max_length=2, default="MD")
     purchase_time = models.DateTimeField(auto_now_add=True)
     ticket_cost = models.DecimalField(max_digits=10, decimal_places=2, default=30.00)
-    meets = models.ForeignKey(Meets, on_delete=models.PROTECT)
+    meets = models.ForeignKey(Meets, on_delete=models.SET_DEFAULT, default=1)
     # seat_num = models.CharField(max_length=10)
     # seatType look into how to set it up
 

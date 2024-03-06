@@ -14,10 +14,7 @@ from rest_framework import status
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 # import for stripe
-from django.http import HttpResponse
-from django.http import HttpResponseForbidden
 import stripe
-import json
 
 #def send_email(request, id):
 #    # Connect to the MySQL database
