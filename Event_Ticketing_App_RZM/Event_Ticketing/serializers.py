@@ -6,7 +6,7 @@ from .models import Spectators
 class HomeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Meets
-        fields = ('meet_name', 'meet_date', 'meet_time_start', 'meet_location_venue', 'meet_location_address', 'meet_location_city', 'meet_location_state', 'meet_location_zipcode', 'meet_about_text', 'ticket_cost', 'max_capacity')
+        fields = ('id', 'meet_name', 'meet_date', 'meet_time_start', 'meet_location_venue', 'meet_location_address', 'meet_location_city', 'meet_location_state', 'meet_location_zipcode', 'meet_about_text', 'ticket_cost', 'max_capacity')
 
 class SpectatorSerializer(serializers.ModelSerializer):
     class Meta:
