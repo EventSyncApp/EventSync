@@ -27,7 +27,7 @@ const HomeList = () => {
              </Typography>
              <List>
                {data.map((item, index) => (
-                 <ListItem key={index} divider>
+                 <ListItem key={index} href={'/signup/${item.id}'} divider>
                    <ListItemText
                      primary={item.meet_name}
                      secondary={format(new Date(item.meet_date), 'MMMM d, yyyy')}

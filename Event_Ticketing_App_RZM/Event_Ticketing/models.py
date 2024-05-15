@@ -30,6 +30,7 @@ class Meets(models.Model):
     meet_location_state = models.CharField(max_length=2, default="MD")
     meet_location_zipcode = models.CharField(max_length=5, unique=False, default='00000')
     meet_about_text = models.TextField(max_length=1200, default='Please add a paragraph about the meet.')
+    ticket_cost = models.DecimalField(max_digits=10, decimal_places=2, default=30.00)
     max_capacity = models.IntegerField()
     creation_time = models.DateTimeField(auto_now_add=True)
 
@@ -43,7 +44,6 @@ class Spectators(models.Model):
     spectator_email = models.EmailField(max_length=100, default='example@example.com')
     spectator_state = models.CharField(max_length=2, default="MD")
     purchase_time = models.DateTimeField(auto_now_add=True)
-    ticket_cost = models.DecimalField(max_digits=10, decimal_places=2, default=30.00)
     meets = models.ForeignKey(Meets, on_delete=models.SET_DEFAULT, default=1)
     # seat_num = models.CharField(max_length=10)
     # seatType look into how to set it up
