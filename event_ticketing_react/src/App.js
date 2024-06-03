@@ -12,12 +12,12 @@ function App() {
         <Router>
             <Routes>
                 <Route exact path="/" element={<HomeList/>} />
-                <Route path="/signup/:eventId" render={({ match }) => (
-                    <SpectatorForm eventId={match.params.eventId} />
-                )} />
+
                 <Route exact path="/success" element={<PaymentSuccess/>} />
                 <Route exact path="/spectator" element={<SpectatorForm />} />
                 <Route exact path="/meet-creation-form" element={<MeetForm/>} />
+                <Route exact path="/spectator-list" element={<spectatorList/>} />
+                <Route exact path="/spectator/:id" element={<SpectatorForm />} />
             </Routes>
         </Router>
     );
