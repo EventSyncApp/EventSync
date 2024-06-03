@@ -8,7 +8,7 @@ import axios from 'axios';
 import StateDropdown from './state_dd.js';
 import {FormControl, InputLabel, Select, MenuItem, Grid, TextField, Button, Box,  CircularProgress, Alert, Typography } from '@mui/material';
 
-export default function CheckoutForm({ meetId }) {
+export default function CheckoutForm({ meetId, meetName  }) {
   //stripe variables
   const [succeeded, setSucceeded] = useState(false);
   const [error, setError] = useState(null);
@@ -174,14 +174,10 @@ useEffect(() => {
 
   return (
   <>
-  <Typography variant="h2" align="center" gutterBottom>
-                 Title here
-              </Typography>
+
     <form id="payment-form" onSubmit={handleSubmit}>
 
-   <Typography variant="h4" component="h2" sx={{ textAlign: 'center', marginY: 2 }}>
-     Sign Up for {meetId} meet
-   </Typography>
+
 
       {/* speactator fields */}
      <Grid container spacing={1}>
