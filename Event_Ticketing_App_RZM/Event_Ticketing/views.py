@@ -94,7 +94,7 @@ class CreateSpectatorView(APIView):
 
             # Email portion of the view
             spectator_email = serializer.validated_data['spectator_email']
-            ticket_cost = serializer.validated_data['ticket_cost']
+            ticket_cost = serializer.validated_data['meets.ticket_cost']
             # create email message
             message = Mail(
                 from_email='eventticketingapprzm@gmail.com',

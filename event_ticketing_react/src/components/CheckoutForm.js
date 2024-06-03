@@ -8,7 +8,7 @@ import axios from 'axios';
 import StateDropdown from './state_dd.js';
 import {FormControl, InputLabel, Select, MenuItem, Grid, TextField, Button, Box,  CircularProgress, Alert, Typography } from '@mui/material';
 
-export default function CheckoutForm() {
+export default function CheckoutForm({ meetId }) {
   //stripe variables
   const [succeeded, setSucceeded] = useState(false);
   const [error, setError] = useState(null);
@@ -93,20 +93,19 @@ export default function CheckoutForm() {
         { code: 'WY', name: 'Wyoming' },
     ];
 
-  useEffect(() => {
-    const fetchClientSecret = async () => {
-      try {
-        const response = await axios.post('/create-payment-intent/');
-        //console.log(`Current Time: ${hours}:${minutes}:${seconds}.${milliseconds}`); testing line
-        const { clientSecret } = response.data;
-        setClientSecret(clientSecret);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+useEffect(() => {
+  const fetchClientSecret = async () => {
+    try {
+      const response = await axios.post('/create-payment-intent/', { meetId, ticket_cost });
+      const { clientSecret } = response.data;
+      setClientSecret(clientSecret);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  fetchClientSecret();
+}, [meetId]);
 
-    fetchClientSecret();
-  }, []);
 
   const cardStyle = {
     style: {
@@ -138,34 +137,40 @@ export default function CheckoutForm() {
     setState(event.target.value);
   }
 
-  const handleSubmit = async ev => {
-    ev.preventDefault();
-    setProcessing(true);
+ const handleSubmit = async ev => {
+   ev.preventDefault();
+   setProcessing(true);
+   try {
+     await axios.post('/add_spectator/', {
+       spectator_fname,
+       spectator_lname,
+       spectator_email,
+       spectator_state,
+       ticket_cost,
+       meetId
+     });
+     setSuccessMessage('Form submitted successfully!');
 
-    axios.post('/add_spectator/', { spectator_fname, spectator_lname, spectator_email, spectator_state, ticket_cost })
-    .then((response) => {
-        setSuccessMessage('Form submitted successfully!');
-        //sendConfirmationEmail();
-        console.log(response.data);
-    })
-    .catch(error => console.log(error));
+     const payload = await stripe.confirmCardPayment(clientSecret, {
+       payment_method: {
+         card: elements.getElement(CardElement)
+       }
+     });
 
-    const payload = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card: elements.getElement(CardElement)
-      }
-    });
-
-    if (payload.error) {
-      setError(`Payment failed ${payload.error.message}`);
-      setProcessing(false);
-    } else {
-      
-      setError(null);
-      setProcessing(false);
-      setSucceeded(true);
-    }
-  };
+     if (payload.error) {
+       setError(`Payment failed ${payload.error.message}`);
+       setProcessing(false);
+     } else {
+       setError(null);
+       setProcessing(false);
+       setSucceeded(true);
+     }
+   } catch (error) {
+     console.log(error);
+     setError("An error occurred while submitting the form.");
+     setProcessing(false);
+   }
+ };
 
   return (
   <>
@@ -174,9 +179,10 @@ export default function CheckoutForm() {
               </Typography>
     <form id="payment-form" onSubmit={handleSubmit}>
 
-     <Typography variant="h4" component="h2" sx={{ textAlign: 'center', marginY: 2 }}>
-                Sign Up for ______ meet
-              </Typography>
+   <Typography variant="h4" component="h2" sx={{ textAlign: 'center', marginY: 2 }}>
+     Sign Up for {meetId} meet
+   </Typography>
+
       {/* speactator fields */}
      <Grid container spacing={1}>
                     {/* First Name field */}
