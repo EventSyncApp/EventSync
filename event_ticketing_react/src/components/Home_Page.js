@@ -1,66 +1,87 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { format } from 'date-fns';
-import { Typography, List, ListItem, ListItemText, CircularProgress, Alert } from '@mui/material';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Typography,
+  CircularProgress,
+  Alert,
+  Link as MuiLink
+} from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 
-const HomeList = () => {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
+const MeetTable = () => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get('/home_page/');
-                console.log(response.data);  // Check the structure here
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('/home_page/');
+        console.log(response.data); // Check the structure here
+        setData(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-                setData(response.data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                setError(true);
-            } finally {
-                setLoading(false);
-            }
-        };
+    fetchData();
+  }, []);
 
-        fetchData();
-    }, []);
+  if (loading) {
+    return <CircularProgress />;
+  }
 
-    if (loading) {
-        return <CircularProgress />;
-    }
+  if (error) {
+    return <Alert severity="error">Error fetching data. Please try again later.</Alert>;
+  }
 
-    if (error) {
-        return <Alert severity="error">Error fetching data. Please try again later.</Alert>;
-    }
-
-    if (data.length === 0) {
-        return <Typography variant="h6">No meets available at the moment.</Typography>;
-    }
-
-    return (
-        <div>
-            <Typography variant="h4" gutterBottom component="h1">
-                Meet List
-            </Typography>
-            <List>
-                {data.map((item) => (
-                    <ListItem
-                        key={item.id}
-                        component={RouterLink}
-                        to={`/spectator/${item.id}`} // Updated to the correct path
-                        divider
-                    >
-                        <ListItemText
-                            primary={item.meet_name}
-                            secondary={format(new Date(item.meet_date), 'MMMM d, yyyy')}
-                        />
-                    </ListItem>
-                ))}
-            </List>
-        </div>
-    );
+  return (
+    <TableContainer component={Paper}>
+      <Typography variant="h4" gutterBottom component="div" align="center">
+       Select a meet to sign up to attend
+      </Typography>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>ID</TableCell>
+            <TableCell>Meet Name</TableCell>
+            <TableCell>Meet Date</TableCell>
+            <TableCell>Meet Time Start</TableCell>
+            <TableCell>Meet Location Venue</TableCell>
+            <TableCell>Meet Location Address</TableCell>
+            {/* Add more TableCells as needed */}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {data.map((row) => (
+            <TableRow key={row.id} component={RouterLink} to={`/spectator/${row.id}`} style={{ textDecoration: 'none' }}>
+              <TableCell>{row.id}</TableCell>
+              <TableCell>
+                <MuiLink component={RouterLink} to={`/spectator/${row.id}`} underline="none" color="inherit">
+                  {row.meet_name}
+                </MuiLink>
+              </TableCell>
+              <TableCell>{row.meet_date}</TableCell>
+              <TableCell>{row.meet_time_start}</TableCell>
+              <TableCell>{row.meet_location_venue}</TableCell>
+              <TableCell>{row.meet_location_address}</TableCell>
+              {/* Add more TableCells as needed */}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
 };
 
-export default HomeList;
+export default MeetTable;
