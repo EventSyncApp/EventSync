@@ -4,9 +4,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import SpectatorForm from './components/spectator_form.js';
 import PaymentSuccess from './components/payment_success.js';
 import MeetForm from './components/meet_director_form.js';
-import HomeList from './components/Home_Page.js';
-import MeetTable from './components/MeetTable.js';
-import './App.css';
+import HomeList from './components/Home_Page.js';import './App.css';
 
 function App() {
     return (
@@ -19,8 +17,6 @@ function App() {
                 <Route exact path="/meet-creation-form" element={<MeetForm/>} />
                 <Route exact path="/spectator-list" element={<spectatorList/>} />
                 <Route exact path="/spectator/:id" element={<SpectatorForm />} />
-                <Route path="/meet-table" element={<MeetTable />} /> {/* Add route for MeetTable */}
-
             </Routes>
         </Router>
     );

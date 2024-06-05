@@ -4,7 +4,9 @@ import axios from 'axios';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import CheckoutForm from './CheckoutForm';
-import { Typography, CircularProgress, Alert } from '@mui/material';
+import { Typography, CircularProgress, Alert, Box } from '@mui/material';
+import InfoLinks from './InfoLinks';
+
 
 const stripePromise = loadStripe('pk_test_51MvjSdLxodRxB3c1pv7Un3MQGhAjv4m2vP1Z9NhcTgh8ccsEEyUMmFNzFbQ8u6qKBe9xPYuxoUMolooXPhGfCAgo00txYV4Z7v');
 
@@ -44,14 +46,15 @@ function SpectatorForm() {
 
 
     return (
-        <div className="App">
-            <Typography variant="h4" gutterBottom>
-                Spectator Form for {meetName}
-            </Typography>
-            <Elements stripe={stripePromise}>
-                <CheckoutForm meetId={id} meetName={meetName} />
-            </Elements>
-        </div>
+         <div className="App">
+                   <Typography variant="h4" gutterBottom>
+                       Spectator Form for {meetName}
+                   </Typography>
+                   <Elements stripe={stripePromise}>
+                       <CheckoutForm meetId={id} meetName={meetName} />
+                   </Elements>
+                <InfoLinks /> {/* Include the new InfoLinks component */}
+               </div>
     );
 }
 

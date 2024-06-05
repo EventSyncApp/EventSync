@@ -11,14 +11,19 @@ import {
   Typography,
   CircularProgress,
   Alert,
+  Box,
+  TextField,
   Link as MuiLink
 } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
+import InfoLinks from './InfoLinks';
 
 const MeetTable = () => {
   const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [filter, setFilter] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,6 +31,7 @@ const MeetTable = () => {
         const response = await axios.get('/home_page/');
         console.log(response.data); // Check the structure here
         setData(response.data);
+        setFilteredData(response.data); // Initially show all data
       } catch (error) {
         console.error('Error fetching data:', error);
         setError(true);
@@ -37,6 +43,14 @@ const MeetTable = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    setFilteredData(
+      data.filter((meet) =>
+        meet.meet_name.toLowerCase().includes(filter.toLowerCase())
+      )
+    );
+  }, [filter, data]);
+
   if (loading) {
     return <CircularProgress />;
   }
@@ -46,41 +60,68 @@ const MeetTable = () => {
   }
 
   return (
-    <TableContainer component={Paper}>
+    <Box display="flex" flexDirection="column" alignItems="center">
       <Typography variant="h4" gutterBottom component="div" align="center">
-       Select a meet to sign up to attend
+        Select a meet to sign up to attend
       </Typography>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>Meet Name</TableCell>
-            <TableCell>Meet Date</TableCell>
-            <TableCell>Meet Time Start</TableCell>
-            <TableCell>Meet Location Venue</TableCell>
-            <TableCell>Meet Location Address</TableCell>
-            {/* Add more TableCells as needed */}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map((row) => (
-            <TableRow key={row.id} component={RouterLink} to={`/spectator/${row.id}`} style={{ textDecoration: 'none' }}>
-              <TableCell>{row.id}</TableCell>
-              <TableCell>
-                <MuiLink component={RouterLink} to={`/spectator/${row.id}`} underline="none" color="inherit">
-                  {row.meet_name}
-                </MuiLink>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell colSpan={6}>
+                <Box display="flex" justifyContent="space-between" alignItems="center">
+                  <Typography variant="h6">Upcoming Meets</Typography>
+                  <TextField
+                    value={filter}
+                    onChange={(e) => setFilter(e.target.value)}
+                    placeholder="Filter by name"
+                    variant="outlined"
+                    size="small"
+                  />
+                </Box>
               </TableCell>
-              <TableCell>{row.meet_date}</TableCell>
-              <TableCell>{row.meet_time_start}</TableCell>
-              <TableCell>{row.meet_location_venue}</TableCell>
-              <TableCell>{row.meet_location_address}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>ID</TableCell>
+              <TableCell>Meet Name</TableCell>
+              <TableCell>Meet Date</TableCell>
+              <TableCell>Meet Time Start</TableCell>
+              <TableCell>Meet Location Venue</TableCell>
+              <TableCell>Meet Location Address</TableCell>
               {/* Add more TableCells as needed */}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {filteredData.map((row) => (
+              <TableRow
+                key={row.id}
+                component={RouterLink}
+                to={`/spectator/${row.id}`}
+                style={{ textDecoration: 'none' }}
+              >
+                <TableCell>{row.id}</TableCell>
+                <TableCell>
+                  <MuiLink
+                    component={RouterLink}
+                    to={`/spectator/${row.id}`}
+                    underline="none"
+                    color="inherit"
+                  >
+                    {row.meet_name}
+                  </MuiLink>
+                </TableCell>
+                <TableCell>{row.meet_date}</TableCell>
+                <TableCell>{row.meet_time_start}</TableCell>
+                <TableCell>{row.meet_location_venue}</TableCell>
+                <TableCell>{row.meet_location_address}</TableCell>
+                {/* Add more TableCells as needed */}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <InfoLinks /> {/* Include the new InfoLinks component */}
+    </Box>
   );
 };
 
