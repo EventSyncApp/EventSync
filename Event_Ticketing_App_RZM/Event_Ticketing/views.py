@@ -70,7 +70,20 @@ def create_payment_intent(request):
         return JsonResponse({'clientSecret': intent.client_secret})
     except Exception as e:
         return JsonResponse({'error': str(e)})
-        
+
+
+class SpectatorsByMeetView(APIView):
+    def get(self, request, meet_id):
+        spectators = Spectators.objects.filter(meets_id=meet_id)  # Use meets_id for filtering
+        serializer = SpectatorSerializer(spectators, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class AllSpectators(APIView):
+    def get(self, request):
+        queryset = Spectators.objects.all()
+        serializer = SpectatorSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class SubmitMeetForm(APIView):
     def post(self, request):
@@ -114,4 +127,4 @@ class CreateSpectatorView(APIView):
             
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
