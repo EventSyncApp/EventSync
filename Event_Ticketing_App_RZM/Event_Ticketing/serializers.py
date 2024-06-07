@@ -8,7 +8,15 @@ class HomeSerializer(serializers.ModelSerializer):
         model = Meets
         fields = ('id', 'meet_name', 'meet_date', 'meet_time_start', 'meet_location_venue', 'meet_location_address', 'meet_location_city', 'meet_location_state', 'meet_location_zipcode', 'meet_about_text', 'ticket_cost', 'max_capacity')
 
+
+class MeetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Meets
+        fields = ['ticket_cost']
+
 class SpectatorSerializer(serializers.ModelSerializer):
+    meets = MeetSerializer()
+
     class Meta:
         model = Spectators
-        fields = ('spectator_fname', 'spectator_lname', 'spectator_email', 'spectator_state', 'meets.ticket_cost')
+        fields = ('spectator_fname', 'spectator_lname', 'spectator_email', 'spectator_state', 'meets')
