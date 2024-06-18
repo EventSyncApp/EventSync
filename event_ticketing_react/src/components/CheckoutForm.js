@@ -147,7 +147,7 @@ useEffect(() => {
        spectator_email,
        spectator_state,
        ticket_cost,
-       meetId
+       meets: meetId
      });
      setSuccessMessage('Form submitted successfully!');
 
