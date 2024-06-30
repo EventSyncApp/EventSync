@@ -62,13 +62,13 @@ const MeetTable = () => {
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
       <Typography variant="h4" gutterBottom component="div" align="center">
-        Select a meet to sign up to attend
+        Logo Here
       </Typography>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell colSpan={6}>
+              <TableCell colSpan={4}>
                 <Box display="flex" justifyContent="space-between" alignItems="center">
                   <Typography variant="h6">Upcoming Meets</Typography>
                   <TextField
@@ -82,13 +82,10 @@ const MeetTable = () => {
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell>ID</TableCell>
               <TableCell>Meet Name</TableCell>
               <TableCell>Meet Date</TableCell>
-              <TableCell>Meet Time Start</TableCell>
-              <TableCell>Meet Location Venue</TableCell>
-              <TableCell>Meet Location Address</TableCell>
-              {/* Add more TableCells as needed */}
+              <TableCell>Venue</TableCell>
+              <TableCell>State</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -99,7 +96,6 @@ const MeetTable = () => {
                 to={`/spectator/${row.id}`}
                 style={{ textDecoration: 'none' }}
               >
-                <TableCell>{row.id}</TableCell>
                 <TableCell>
                   <MuiLink
                     component={RouterLink}
@@ -111,10 +107,8 @@ const MeetTable = () => {
                   </MuiLink>
                 </TableCell>
                 <TableCell>{row.meet_date}</TableCell>
-                <TableCell>{row.meet_time_start}</TableCell>
                 <TableCell>{row.meet_location_venue}</TableCell>
-                <TableCell>{row.meet_location_address}</TableCell>
-                {/* Add more TableCells as needed */}
+                <TableCell>{row.meet_location_state}</TableCell>
               </TableRow>
             ))}
           </TableBody>
