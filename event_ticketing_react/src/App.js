@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Box } from '@mui/material';
 import SpectatorForm from './components/spectator_form.js';
-import PaymentSuccess from './components/payment_success.js';
+import PaymentSuccess from './components/PaymentSuccess.js';
 import MeetForm from './components/meet_director_form.js';
 import SpectatorsTable from './components/SpectatorsTable';
 import AllSpectatorsTable from './components/AllSpectatorsTable';
