@@ -48,12 +48,12 @@ function SpectatorForm() {
     return (
          <div className="App">
                    <Typography variant="h4" gutterBottom>
-                       Spectator Form for {meetName}
+                       Spectator Tickets for: {meetName}
                    </Typography>
                    <Elements stripe={stripePromise}>
                        <CheckoutForm meetId={id} meetName={meetName} />
                    </Elements>
-                <InfoLinks /> {/* Include the new InfoLinks component */}
+                <InfoLinks />
                </div>
     );
 }
