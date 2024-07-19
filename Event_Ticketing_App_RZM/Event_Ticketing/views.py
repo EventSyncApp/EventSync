@@ -35,7 +35,7 @@ class CreateSpectatorView(APIView):
 
             # send email using SendGrid API
             try:
-                sg = SendGridAPIClient(api_key='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')
+                sg = SendGridAPIClient(api_key='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')
                 response = sg.send(message)
                 print(response.status_code)
                 print(response.body)

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, Typography } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, Typography, Box } from '@mui/material';
 
 const AllSpectatorsTable = () => {
   const [spectators, setSpectators] = useState([]);
@@ -28,30 +28,32 @@ const AllSpectatorsTable = () => {
   if (error) return <Typography color="error">Error loading spectators: {error.message}</Typography>;
 
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>First Name</TableCell>
-            <TableCell>Last Name</TableCell>
-            <TableCell>Email</TableCell>
-            <TableCell>State</TableCell>
-            <TableCell>Ticket Cost</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {spectators.map((spectator, index) => (
-            <TableRow key={index}>
-              <TableCell>{spectator.spectator_fname}</TableCell>
-              <TableCell>{spectator.spectator_lname}</TableCell>
-              <TableCell>{spectator.spectator_email}</TableCell>
-              <TableCell>{spectator.spectator_state}</TableCell>
-              <TableCell>{spectator.meets.ticket_cost}</TableCell>
+    <Box display="flex" justifyContent="center" padding="20px">
+      <TableContainer component={Paper} sx={{ width: '90%', maxWidth: '1200px', maxHeight: '600px', overflowY: 'auto', overflowX: 'hidden', paddingRight: '17px' }}>
+        <Table stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell>First Name</TableCell>
+              <TableCell>Last Name</TableCell>
+              <TableCell>Email</TableCell>
+              <TableCell>State</TableCell>
+              <TableCell>Ticket Cost</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {spectators.map((spectator, index) => (
+              <TableRow key={index}>
+                <TableCell>{spectator.spectator_fname}</TableCell>
+                <TableCell>{spectator.spectator_lname}</TableCell>
+                <TableCell>{spectator.spectator_email}</TableCell>
+                <TableCell>{spectator.spectator_state}</TableCell>
+                <TableCell>{spectator.meets.ticket_cost}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 };
 

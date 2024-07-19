@@ -114,7 +114,7 @@ const MeetTable = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <InfoLinks /> {/* Include the new InfoLinks component */}
+      <InfoLinks />
     </Box>
   );
 };
